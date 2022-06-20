@@ -1,8 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { title } from 'process';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { BooksService } from './books.service';
 
-@Controller('book')
+@Controller('books')
 export class BooksController {
   constructor(private booksService: BooksService) {}
 
@@ -15,22 +23,22 @@ export class BooksController {
   getBooks(
     @Query('title') title: string,
     @Query('author') author: string,
-    @Query('category') category: string
-    ) {
+    @Query('category') category: string,
+  ) {
     return this.booksService.getBooks(title, author, category);
   }
 
   @Get()
   getOneBook(@Param('id') id: string) {
-    return this.booksService.getOneBook(id)
+    return this.booksService.getOneBook(id);
   }
 
   @Post()
   createBook(
     @Body('name') name: string,
     @Body('author') author: string,
-    @Body('category') category: string
-    ) {
+    @Body('category') category: string,
+  ) {
     return this.booksService.createBook(name, author, category);
   }
 
@@ -39,13 +47,13 @@ export class BooksController {
     @Param('id') id: string,
     @Body('name') name: string,
     @Body('author') author: string,
-    @Body('category') category: string
-    ) {
+    @Body('category') category: string,
+  ) {
     return this.booksService.updateBook(id, name, author, category);
   }
 
   @Delete('/:id')
   deleteBook(@Param('id') id: string) {
-    return this.booksService.deleteBook(id)
+    return this.booksService.deleteBook(id);
   }
 }
