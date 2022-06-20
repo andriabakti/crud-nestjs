@@ -9,6 +9,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
+import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
+import { FilterBookDto } from './dto/filter-book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -20,36 +23,23 @@ export class BooksController {
   }
 
   @Get()
-  getBooks(
-    @Query('title') title: string,
-    @Query('author') author: string,
-    @Query('category') category: string,
-  ) {
-    return this.booksService.getBooks(title, author, category);
+  getBooks(@Query('') filter: FilterBookDto) {
+    return this.booksService.getBooks(filter);
   }
 
-  @Get()
+  @Get('/:id')
   getOneBook(@Param('id') id: string) {
     return this.booksService.getOneBook(id);
   }
 
   @Post()
-  createBook(
-    @Body('name') name: string,
-    @Body('author') author: string,
-    @Body('category') category: string,
-  ) {
-    return this.booksService.createBook(name, author, category);
+  createBook(@Body() payload: CreateBookDto) {
+    return this.booksService.createBook(payload);
   }
 
   @Put('/:id')
-  updateBook(
-    @Param('id') id: string,
-    @Body('name') name: string,
-    @Body('author') author: string,
-    @Body('category') category: string,
-  ) {
-    return this.booksService.updateBook(id, name, author, category);
+  updateBook(@Param('id') id: string, @Body() payload: UpdateBookDto) {
+    return this.booksService.updateBook(id, payload);
   }
 
   @Delete('/:id')
