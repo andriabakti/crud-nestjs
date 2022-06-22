@@ -1,4 +1,6 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
+import { CreateBookDto } from '../dto/create-book.dto';
 import { FilterBookDto } from '../dto/filter-book.dto';
 import { Book } from './../entity/books.entity';
 
@@ -36,5 +38,21 @@ export class BookRepository extends Repository<Book> {
     }
 
     return await query.getMany();
+  }
+
+  async createBook(createBookDto: CreateBookDto): Promise<void> {
+    const { title, author, category, year } = createBookDto;
+
+    const book = this.create();
+    book.title = title;
+    book.author = author;
+    book.category = category;
+    book.year = year;
+
+    try {
+      await book.save();
+    } catch (e) {
+      throw new InternalServerErrorException(e);
+    }
   }
 }
